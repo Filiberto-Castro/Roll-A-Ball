@@ -27,4 +27,11 @@ public class PlayerController : MonoBehaviour
 
         transform.position += moveDirection * moveSpeed * Time.deltaTime;
     }
+
+    private void OnTriggerEnter(Collider other) {
+        if(other.gameObject.CompareTag("PickUp"))
+        {
+            Destroy(other.gameObject);
+        }
+    }
 }

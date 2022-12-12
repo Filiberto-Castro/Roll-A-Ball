@@ -6,26 +6,25 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour
 {
     private Rigidbody rb;
-    private float movementX;
-    private float movementY;
+    private float horizontal;
+    private float vertical;
+    public float moveSpeed = 0f;
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
     }
 
-    void OnMove(InputValue movementValue)
+    public void OnMoveInput(float horizontal, float vertical)
     {
-        Vector2 movementVector = movementValue.Get<Vector2>();
-
-        movementX = movementVector.x;
-        movementY = movementVector.y;
+        this.vertical = vertical;
+        this.horizontal = horizontal;
     }
 
     void FixedUpdate() 
     {
-        Vector3 movement = new Vector3(movementX, 0.0f, movementY);
+        Vector3 moveDirection = Vector3.forward * vertical + Vector3.right * horizontal;
 
-        rb.AddForce(movement);
+        transform.position += moveDirection * moveSpeed * Time.deltaTime;
     }
 }

@@ -102,7 +102,6 @@ crashlytics-build.properties
 
 .vscode
 /Assets/Temporal
-/Assets/InputActions
 /Assets/Materials
 /Assets/model3D
 /Assets/Scenes
@@ -112,3 +111,4 @@ crashlytics-build.properties
 *.txt
 *.json
 *.config
+*.inputactions

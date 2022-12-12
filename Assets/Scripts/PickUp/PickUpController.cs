@@ -5,6 +5,7 @@ using UnityEngine;
 public class PickUpController : MonoBehaviour
 {
     public GameObject[] puntosDePickUp;
+    public int score;
 
     void Start()
     {
@@ -15,11 +16,11 @@ public class PickUpController : MonoBehaviour
         {
             puntosDePickUp[i] = puntosPickUpObjeto.transform.GetChild(i).gameObject;
         }
-        Debug.Log(puntosDePickUp);
+        score = childCount;
     }
 
     void Update()
     {
-        
+
     }
 }

@@ -109,6 +109,12 @@ crashlytics-build.properties
 *.meta
 *.asset
 *.txt
+*.png
 *.json
 *.config
 *.inputactions
+*.shader
+*.cginc
+*.mat
+*.ttf
+*.pdf

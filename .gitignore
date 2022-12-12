@@ -112,4 +112,3 @@ crashlytics-build.properties
 *.txt
 *.json
 *.config
-*.cs

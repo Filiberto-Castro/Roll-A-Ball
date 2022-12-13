@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-using Random = UnityEngine.Random;
 
 public class AIEnemyController : MonoBehaviour
 {
@@ -15,12 +14,9 @@ public class AIEnemyController : MonoBehaviour
     public float radioAlerta;
     [Range(0, 360)]
     public float angulo;
-
     public GameObject playerRef;
-
     public LayerMask targetMask;
     public LayerMask obstruccionMask;
-
     public bool canSeePlayer;
 
     //--------- Enemy Controller -----------
@@ -29,46 +25,27 @@ public class AIEnemyController : MonoBehaviour
     public Transform player;
     public Animator animator;
 
-    //patrullando
-
-    [Header("Sistema Patrullaje")]
-    public List<Transform> refPuntos = new List<Transform>();
-    public bool alcancePunto;
-    public float moveSpeed = 4;
-
     [Header("Modo Alerta")]
     //recibe daño
     public bool enAlerta;
     public float disBusqueda;
     public bool loVeo;
-    [SerializeField]
-    private GameObject[] puntosDeCobertura;
-    [SerializeField]
-    private GameObject puntoDeCoberturaMasCercano;
-
-    public bool aCubierto;
-
-    //Atacando
-    //EnemyFire Shooting;
-
-    [Header("Sistema Ataque")]
-    public GameObject proyectil;
-    public Transform puntoProyectil;
-
-
-    public bool alreadyAttacked;
-    public float tiempoDisparo = 0.5f;
 
     [Header("Sistema Perseguir")]
     //ChasePlayer - persiguiendo jugador
-    public float runSpeed = 6;
+    public float moveSpeed;
     public bool persiguiendo;
     public float minDisPerseguir = 10;
     public bool alcanceDistance;
     public float miDistanciaPlayer;
 
+    public Transform targetPlayer;
+
+    public String tipoJugador;
+
     private void Awake() {
         player = GameObject.FindGameObjectWithTag("Player").transform;
+        targetPlayer = GameObject.FindGameObjectWithTag("Target").transform;
     }
 
 
@@ -76,17 +53,17 @@ public class AIEnemyController : MonoBehaviour
     {
         radioActual = radioAlerta;
         enAlerta = false;
-        loVeo = false; //! cambio
+        loVeo = true;
 
         playerRef = GameObject.FindGameObjectWithTag("Player");
         agente = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
         
         agente.autoBraking = false;
-
         alcanceDistance = false;
-
         StartCoroutine(FOVRoutine());
+
+        canSeePlayer = true;
     }
 
     private void Update() 
@@ -95,9 +72,13 @@ public class AIEnemyController : MonoBehaviour
 
         if(canSeePlayer)
         {   
-            //Perseguir
-            agente.SetDestination(player.position);
-            //ChasePlayer();
+            if(tipoJugador == "azul")
+            {
+                ChasePlayer(player);
+            } else if(tipoJugador == "rojo")
+            {
+                ChasePlayer(targetPlayer);
+            }
         }
 
     }
@@ -141,6 +122,7 @@ public class AIEnemyController : MonoBehaviour
                     else
                     {
                         canSeePlayer = true;
+
                     }
                 }
                 else
@@ -161,10 +143,10 @@ public class AIEnemyController : MonoBehaviour
         }
     }
 
-    private void ChasePlayer()
+    private void ChasePlayer(Transform target)
     {
-        agente.SetDestination(player.position);
-        agente.speed = runSpeed;
+        agente.SetDestination(target.position);
+        agente.speed = moveSpeed;
         //animator.SetBool("isAtacando", false);
         //animator.SetBool("isPersiguiendo", true);
         float distance = Vector3.Distance(agente.transform.position, player.position);
@@ -184,6 +166,5 @@ public class AIEnemyController : MonoBehaviour
 
         
     }
-
 
 }
